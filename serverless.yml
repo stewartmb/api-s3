@@ -3,14 +3,14 @@ service: api-s3
 
 provider:
   name: aws
-  runtime: python3.12	
-  # Default memory size for functions (default: 256MB)
+  runtime: python3.12
   memorySize: 256
   timeout: 30
   iam:
     role: arn:aws:iam::630606600000:role/LabRole
 
 functions:
+  # List all buckets
   lista_buckets:
     handler: lista_buckets.lambda_handler
     memorySize: 512
@@ -20,11 +20,43 @@ functions:
           method: get
           cors: true
           integration: lambda
+
+  # List objects in a specific bucket
   lista_objetos_bucket:
     handler: lista_objetos_bucket.lambda_handler
     events:
       - http:
           path: /s3/bucket/lista-objetos
+          method: post
+          cors: true
+          integration: lambda
+
+  # Delete a bucket
+  delete_bucket:
+    handler: delete_bucket.lambda_handler
+    events:
+      - http:
+          path: /s3/bucket/delete
+          method: post
+          cors: true
+          integration: lambda
+
+  # Create a bucket
+  create_bucket:
+    handler: create_bucket.lambda_handler
+    events:
+      - http:
+          path: /s3/bucket/create
+          method: post
+          cors: true
+          integration: lambda
+
+  # Delete an object from a bucket
+  delete_object:
+    handler: delete_object.lambda_handler
+    events:
+      - http:
+          path: /s3/bucket/delete-object
           method: post
           cors: true
           integration: lambda
