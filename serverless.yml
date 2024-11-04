@@ -10,38 +10,7 @@ provider:
     role: arn:aws:iam::630606600000:role/LabRole
 
 functions:
-  # List all buckets
-  lista_buckets:
-    handler: lista_buckets.lambda_handler
-    memorySize: 512
-    events:
-      - http:
-          path: /s3/lista-buckets
-          method: get
-          cors: true
-          integration: lambda
-
-  # List objects in a specific bucket
-  lista_objetos_bucket:
-    handler: lista_objetos_bucket.lambda_handler
-    events:
-      - http:
-          path: /s3/bucket/lista-objetos
-          method: post
-          cors: true
-          integration: lambda
-
-  # Delete a bucket
-  delete_bucket:
-    handler: delete_bucket.lambda_handler
-    events:
-      - http:
-          path: /s3/bucket/delete
-          method: post
-          cors: true
-          integration: lambda
-
-  # Create a bucket
+  # Create a new bucket
   create_bucket:
     handler: create_bucket.lambda_handler
     events:
@@ -51,12 +20,22 @@ functions:
           cors: true
           integration: lambda
 
-  # Delete an object from a bucket
-  delete_object:
-    handler: delete_object.lambda_handler
+  # Create a new directory in an existing bucket
+  create_directory:
+    handler: create_directory.lambda_handler
     events:
       - http:
-          path: /s3/bucket/delete-object
+          path: /s3/bucket/create-directory
+          method: post
+          cors: true
+          integration: lambda
+
+  # Upload a file to a directory in an existing bucket
+  upload_file:
+    handler: upload_file.lambda_handler
+    events:
+      - http:
+          path: /s3/bucket/upload-file
           method: post
           cors: true
           integration: lambda
