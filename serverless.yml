@@ -10,6 +10,27 @@ provider:
     role: arn:aws:iam::630606600000:role/LabRole
 
 functions:
+  # List all buckets
+  lista_buckets:
+    handler: lista_buckets.lambda_handler
+    memorySize: 512
+    events:
+      - http:
+          path: /s3/lista-buckets
+          method: get
+          cors: true
+          integration: lambda
+
+  # List objects in a specific bucket
+  lista_objetos_bucket:
+    handler: lista_objetos_bucket.lambda_handler
+    events:
+      - http:
+          path: /s3/bucket/lista-objetos
+          method: post
+          cors: true
+          integration: lambda
+
   # Create a new bucket
   create_bucket:
     handler: create_bucket.lambda_handler
