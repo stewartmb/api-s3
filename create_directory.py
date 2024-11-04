@@ -1,21 +1,23 @@
 import boto3
 
 def lambda_handler(event, context):
-    # Input (JSON)
-    nombre_bucket = event['body']['bucket']
-    nombre_directorio = event['body']['directory'] + '/'  # Ensuring it ends with '/'
-    
-    # Process
-    s3 = boto3.client('s3')
+    bucket = event["body"]["bucket"]
+    directorio = event["body"]["directorio"]
+
+    s3 = boto3.client("s3")
+
     try:
-        # Create an empty object with a key ending in '/'
-        s3.put_object(Bucket=nombre_bucket, Key=nombre_directorio)
+        s3.put_object(
+            Bucket=bucket,
+            Key=(directorio + "/")
+        )
         return {
-            'statusCode': 200,
-            'message': f'Directory {nombre_directorio} created in bucket {nombre_bucket} successfully.'
+            'statusCode': 201,
+            'directorio': directorio
         }
     except Exception as e:
+        print(e)
         return {
-            'statusCode': 400,
-            'error': str(e)
+            "statusCode": 400,
+            "message":"No se pudo crear el directorio"
         }
